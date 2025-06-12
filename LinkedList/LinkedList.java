@@ -26,21 +26,27 @@ public class LinkedList {
         head = removeTail(head);
         printList(head);
         System.out.println("-----------------------------------------------------------------------");
+        System.out.println("============================= Remove At K =============================");
+        head = removeAtPositionK(head, 1);
+        printList(head);
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("============================= Add At K =============================");
+        head = addAtPositionK(head, 5 , 101);
+        printList(head);
     }
 
     public static Node CreateLinkedList(int[] arr) {
-        if(arr.length == 0){
-            return null;
-        }else{
-            Node head = new Node(arr[0]);
-            Node mover = head;
-            for (int i = 1; i < arr.length; i++) {
-                Node node = new Node(arr[i]);
-                mover.next = node;
-                mover = node;
-            }
-            return head;
+        if (arr.length == 0) return null;
+
+        Node head = new Node(arr[0]);
+        Node mover = head;
+
+        for (int i = 1; i < arr.length; i++) {
+            mover.next = new Node(arr[i]);
+            mover = mover.next;
         }
+
+        return head;
     }
     public static Node addHead(Node head, int data) {
         Node newNode = new Node(data);
@@ -48,11 +54,7 @@ public class LinkedList {
         return newNode;
     }
     public static Node removeHead(Node head) {
-        Node next = head.next;
-        if(next != null){
-            return next;
-        }
-        return null;  
+        return (head != null) ? head.next : null;
     }
 
     public static void printList(Node head) {
@@ -65,6 +67,8 @@ public class LinkedList {
 
     public static Node addTail(Node head, int data) {
         Node newNode = new Node(data);
+        if (head == null) return newNode;
+
         Node current = head;
         while (current.next != null) {
             current = current.next;
@@ -73,15 +77,68 @@ public class LinkedList {
         return head;
     }
     public static Node removeTail(Node head) {
-        Node current = head;
-        if(head.next == null){
-            return null;
-        }else{
-            while (current.next.next != null) {
-                current = current.next;
-            }
-            current.next = null;
+        if (head == null || head.next == null) {
+            return null; // empty or single-element list
         }
-        return head;    
+
+        Node current = head;
+        while (current.next.next != null) {
+            current = current.next;
+        }
+        current.next = null;
+        return head;
+    }
+
+
+    public static Node removeAtPositionK(Node head, int k) {
+        if (k <= 0 || head == null) return head;
+
+        if (k == 1) {
+            return removeHead(head); // assume this removes and returns new head
+        }
+
+        Node current = head;
+        Node previous = null;
+        int count = 1;
+
+        while (current != null && count < k) {
+            previous = current;
+            current = current.next;
+            count++;
+        }
+
+        if (current != null) {
+            previous.next = current.next; // removes the k-th node
+        }
+
+        return head;
+    }
+
+    public static Node addAtPositionK(Node head, int k, int data) {
+        if (k <= 0) return head; // invalid position
+
+        if (k == 1) {
+            return addHead(head, data);
+        }
+
+        Node current = head;
+        Node previous = null;
+        int count = 1;
+
+        while (current != null && count < k) {
+            previous = current;
+            current = current.next;
+            count++;
+        }
+
+        // At this point, current is either null (end) or at position k
+        Node newNode = new Node(data);
+        if (previous != null) {
+            previous.next = newNode;
+        }
+
+        newNode.next = current;
+
+        return head;
     }
 }
