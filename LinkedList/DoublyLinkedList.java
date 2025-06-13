@@ -30,12 +30,16 @@ public class DoublyLinkedList {
         System.out.println("============================= Remove At K =====================");
         head = removeAtPositionK(head,2);
         printList(head);
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("============================= Reverse LL =============================");
+        head = reverseLinkedList(head);
+        printList(head);
     }
 
     public static void printList(DoublyNode head) {
         while (head != null) {
-            System.out.println("prev : "+head.prev+" "+"data : "+head.data + " "+"next : "+head.next);
-            // System.out.print(head.data + "  ");
+            // System.out.println("prev : "+head.prev+" "+"data : "+head.data + " "+"next : "+head.next);
+            System.out.print(head.data + "  ");
             head = head.next;
         }
         System.out.println();
@@ -137,6 +141,31 @@ public class DoublyLinkedList {
                 }
             }
         }
+        return head;
+    }
+
+    public static DoublyNode reverseLinkedList(DoublyNode head) {
+    if (head == null || head.next == null) return head;
+
+        DoublyNode current = head;
+        DoublyNode temp = null;
+
+        while (current != null) {
+            // Swap next and prev
+            temp = current.prev;
+            current.prev = current.next;
+            current.next = temp;
+
+            // Move to the next node (which is previous before the swap)
+            current = current.prev;
+        }
+
+        // After the loop, `temp` is at the last node processed,
+        // so its `prev` is the new head
+        if (temp != null) {
+            head = temp.prev;
+        }
+
         return head;
     }
 }

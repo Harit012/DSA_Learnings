@@ -33,6 +33,10 @@ public class LinkedList {
         System.out.println("============================= Add At K =============================");
         head = addAtPositionK(head, 5 , 101);
         printList(head);
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("============================= Reverse LL =============================");
+        head = reverseLinkedList(head);
+        printList(head);
     }
 
     public static Node CreateLinkedList(int[] arr) {
@@ -140,5 +144,19 @@ public class LinkedList {
         newNode.next = current;
 
         return head;
+    }
+
+    public static Node reverseLinkedList(Node head) {
+        Node prev = null;
+        Node current = head;
+
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
     }
 }
